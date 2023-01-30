@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Routers from "./Routers";
 import { getAuth } from "firebase/auth";
+import GlobalStyle from "GlobalStyle";
 
 const App = () => {
   const [init, setInit] = useState(false);
@@ -32,6 +33,7 @@ const App = () => {
 
   return (
     <>
+      <GlobalStyle />
       {init ? (
         <Routers
           isLoggedIn={isLoggedIn}

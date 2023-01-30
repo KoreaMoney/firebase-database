@@ -1,49 +1,16 @@
+import AuthForm from "components/AuthForm";
 import {
-  createUserWithEmailAndPassword,
   getAuth,
   GithubAuthProvider,
   GoogleAuthProvider,
-  signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
-import React, { useState } from "react";
+import React from "react";
+import styled from "styled-components";
+import { AiFillGoogleCircle, AiFillGithub } from "react-icons/ai";
 
 const Auth = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [newAccount, setNewAccount] = useState(true);
-  const [error, setError] = useState("");
-
   const auth = getAuth();
-
-  const onChange = (event) => {
-    const {
-      target: { name, value },
-    } = event;
-    if (name === "email") {
-      setEmail(value);
-    } else if (name === "password") {
-      setPassword(value);
-    }
-  };
-  const onSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      if (newAccount) {
-        /**Create Account */
-        await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        /**LogIn */
-        await signInWithEmailAndPassword(auth, email, password);
-      }
-    } catch (error) {
-      setError(error.message);
-    }
-  };
-
-  const toggleAccount = () => {
-    setNewAccount((prev) => !prev);
-  };
 
   const onSocialClick = async (event) => {
     const {
@@ -59,40 +26,68 @@ const Auth = () => {
   };
 
   return (
-    <>
-      <form onSubmit={onSubmit}>
-        <input
-          name="email"
-          type="email"
-          placeholder="Add Email"
-          required
-          value={email}
-          onChange={onChange}
-        />
-        <input
-          name="password"
-          type="password"
-          placeholder="Add Password"
-          required
-          value={password}
-          onChange={onChange}
-        />
-        <input type="submit" value={newAccount ? "Create Account" : "SigIn"} />
-        {error}
-      </form>
-      <span onClick={toggleAccount}>
-        {newAccount ? "SigIn" : "Create Account"}
-      </span>
-      <div>
-        <button name="google" onClick={onSocialClick}>
-          Continue with Google
-        </button>
-        <button name="github" onClick={onSocialClick}>
-          Continue with Github
-        </button>
-      </div>
-    </>
+    <AuthFormWrapper>
+      <AuthForm />
+      <SocialWrapper>
+        <GoogleBtn name="google" onClick={onSocialClick}>
+          Google Login
+          <AiFillGoogleCircle size={20} />
+        </GoogleBtn>
+        <GithubBtn name="github" onClick={onSocialClick}>
+          Github Login
+          <AiFillGithub size={20} />
+        </GithubBtn>
+      </SocialWrapper>
+    </AuthFormWrapper>
   );
 };
+const AuthFormWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  width: 500px;
+  height: 30vh;
+`;
+
+const SocialWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 30px;
+`;
+const GoogleBtn = styled.button`
+  width: 170px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  &:hover {
+    border: 3px solid #039be5;
+  }
+  &:active {
+    background-color: #039be5;
+  }
+`;
+const GithubBtn = styled.button`
+  width: 170px;
+  height: 40px;
+  border-radius: 20px;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  &:hover {
+    border: 3px solid #039be5;
+  }
+  &:active {
+    background-color: #039be5;
+  }
+`;
 
 export default Auth;

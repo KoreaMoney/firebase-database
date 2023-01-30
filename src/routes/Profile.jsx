@@ -9,6 +9,7 @@ const Profile = ({ userObj, refreshUser }) => {
   const auth = getAuth();
   const onLogOutClick = () => {
     auth.signOut();
+    refreshUser();
   };
   /**내가 쓴 글 가져오기 */
   const getMyDwitter = async () => {
@@ -54,4 +55,7 @@ const Profile = ({ userObj, refreshUser }) => {
     </>
   );
 };
+
+
+
 export default Profile;
